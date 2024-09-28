@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/color.dart';
 import 'package:flutter_application_1/data/bottom_menu.dart';
+import 'package:flutter_application_1/page/cart_screen.dart';
 import 'package:flutter_application_1/page/home_page.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -57,6 +58,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
 List<Widget> child = [
   const HomePage(),
   Container(color: white),
-  Container(color: white),
+  const MyCartScreen(),
   Container(color: white),
 ];
