@@ -8,27 +8,18 @@ class MyCartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: white,
+      appBar: AppBar(
+        title: const Text("Cart"),
+        backgroundColor: white,
+        automaticallyImplyLeading: false,
+      ),
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: double.maxFinite,
-        color: myCartBackgroundColor,
-        child: Center(
+        margin: const EdgeInsets.all(5),
           child: Container(
-            decoration: const BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25))),
-            padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
             child: Column(
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                // row of text and icon
-                const SizedBox(
-                  height: 20,
-                ),
+            children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -91,8 +82,7 @@ class MyCartScreen extends StatelessWidget {
                     )
                   ],
                 )
-              ],
-            ),
+            ],
           ),
         ),
       ),
