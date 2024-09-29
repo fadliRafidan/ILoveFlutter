@@ -1,7 +1,10 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter_application_1/page/details_page.dart';
 import 'package:flutter_application_1/utils/convert_to_rupiah.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/color.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter/cupertino.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -89,6 +92,55 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _filterDataCategori(String id) async {
     await _fetchProducts(id);
+  }
+
+  Future<void> _addToCart(String id) async {
+    try {
+      final response = await supabase
+          .from('cart')
+          .select('cart_id, quantity')
+          .eq('product_id', id);
+      if (response.isEmpty) {
+        await supabase.from('cart').insert({'product_id': id, 'quantity': 1});
+      } else {
+        await supabase
+            .from('cart')
+            .update({'quantity': response[0]['quantity'] + 1}).eq(
+                'cart_id', response[0]['cart_id']);
+      }
+      if (mounted) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const CupertinoAlertDialog(
+                title: Text('Berhasil'),
+                content: Text('Produk ditambahkan ke keranjang'),
+              );
+            });
+      }
+    } on PostgrestException {
+      if (mounted) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const CupertinoAlertDialog(
+                title: Text('Gagal'),
+                content: Text('Produk gagal ditambahkan'),
+              );
+            });
+      }
+    } catch (error) {
+      if (mounted) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const CupertinoAlertDialog(
+                title: Text('Gagal'),
+                content: Text('Produk gagal ditambahkan'),
+              );
+            });
+      }
+    } finally {}
   }
 
   @override
@@ -299,105 +351,88 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(left: 20.0),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (itemBuilder, index) {
-                  return Container(
-                    width: 200.0,
-                    margin: const EdgeInsets.only(right: 20, bottom: 10),
-                    decoration: BoxDecoration(
-                      color: lightGreen,
-                      boxShadow: [
-                        BoxShadow(
-                          color: green.withOpacity(0.1),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (builder) => DetailsPage(
+                              productId: popularProducts[index]['product_id']),
                         ),
-                      ],
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: Stack(
-                      children: [
-                        Row(
-                          children: [
-                            Image.network(
-                              popularProducts[index]['image'],
-                              fit: BoxFit.contain,
-                              width: 70,
-                              height: 70,
-                            ),
-                            const SizedBox(width: 10.0),
-                            Flexible(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    popularProducts[index]['name'],
-                                    style: TextStyle(
-                                      color: black.withOpacity(0.7),
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                  Text(
-                                    formatRupiah(
-                                        popularProducts[index]['price']),
-                                    style: TextStyle(
-                                      color: black.withOpacity(0.4),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12.0,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Positioned(
-                          right: 20,
-                          bottom: 20,
-                          child: GestureDetector(
-                            onTap: () async {
-                              final response = await supabase
-                                  .from('cart')
-                                  .insert({
-                                'product_id': popularProducts[index]
-                                    ['product_id'],
-                                'quantity': 1
-                              });
-                              // if (response.error == null) {
-                              //   showDialog(
-                              //     context: context,
-                              //     builder: (BuildContext context) {
-                              //       return AlertDialog(
-                              //         title: const Text('Success'),
-                              //         content: const Text(
-                              //             'Product added to cart successfully!'),
-                              //         actions: [
-                              //           TextButton(
-                              //             onPressed: () {
-                              //               Navigator.of(context)
-                              //                   .pop(); // Close the dialog
-                              //             },
-                              //             child: const Text('OK'),
-                              //           ),
-                              //         ],
-                              //       );
-                              //     },
-                              //   );
-                              // } else {
-                              //   print('Error: ${response.error?.message}');
-                              // }
-                            },
-                            child: CircleAvatar(
-                              backgroundColor: green,
-                              radius: 15,
-                              child: Image.asset(
-                                'assets/icons/add.png',
-                                color: white,
-                                height: 15,
-                              ),
-                            ),
+                      );
+                    },
+                    child: Container(
+                      width: 200.0,
+                      margin: const EdgeInsets.only(right: 20, bottom: 10),
+                      decoration: BoxDecoration(
+                        color: lightGreen,
+                        boxShadow: [
+                          BoxShadow(
+                            color: green.withOpacity(0.1),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
                           ),
-                        )
-                      ],
+                        ],
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Stack(
+                        children: [
+                          Row(
+                            children: [
+                              Image.network(
+                                popularProducts[index]['image'],
+                                fit: BoxFit.contain,
+                                width: 70,
+                                height: 70,
+                              ),
+                              const SizedBox(width: 10.0),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      popularProducts[index]['name'],
+                                      style: TextStyle(
+                                        color: black.withOpacity(0.7),
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ),
+                                    Text(
+                                      formatRupiah(
+                                          popularProducts[index]['price']),
+                                      style: TextStyle(
+                                        color: black.withOpacity(0.4),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Positioned(
+                            right: 20,
+                            bottom: 20,
+                            child: GestureDetector(
+                              onTap: () {
+                                _addToCart(
+                                    popularProducts[index]['product_id']);
+                              },
+                              child: CircleAvatar(
+                                backgroundColor: green,
+                                radius: 15,
+                                child: Image.asset(
+                                  'assets/icons/add.png',
+                                  color: white,
+                                  height: 15,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -431,14 +466,14 @@ class _HomePageState extends State<HomePage> {
   Widget mainPlantsCard(index) {
     final product = products[index];
     return GestureDetector(
-      // onTap: () {
-      //   Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (builder) => DetailsPage(plant: product),
-      //     ),
-      //   );
-      // },
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (builder) => DetailsPage(productId: product['product_id']),
+          ),
+        );
+      },
       child: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
@@ -475,13 +510,18 @@ class _HomePageState extends State<HomePage> {
             Positioned(
               right: 8,
               top: 8,
-              child: CircleAvatar(
-                backgroundColor: green,
-                radius: 15,
-                child: Image.asset(
-                  'assets/icons/add.png',
-                  color: white,
-                  height: 15,
+              child: GestureDetector(
+                onTap: () {
+                  _addToCart(product['product_id']);
+                },
+                child: CircleAvatar(
+                  backgroundColor: green,
+                  radius: 15,
+                  child: Image.asset(
+                    'assets/icons/add.png',
+                    color: white,
+                    height: 15,
+                  ),
                 ),
               ),
             ),

@@ -89,7 +89,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
 List<Widget> child = [
   const HomePage(),
-  const WishlistScreen(),
-  const MyCartScreen(),
+  const WishListPage(),
+  const CartPage(),
   const ProfilePage(),
 ];

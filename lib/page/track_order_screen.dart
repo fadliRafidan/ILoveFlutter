@@ -22,7 +22,6 @@ class TrackOrderScreen extends StatelessWidget {
           'Track Order',
           style: TextStyle(color: darkText),
         ),
-        // leading: Icon(),
       ),
       body: Container(
         padding: const EdgeInsets.all(20),
@@ -30,14 +29,12 @@ class TrackOrderScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-// column of text and images
-            Column(
+            const Column(
               children: [
-                // Column of text
-                const SizedBox(
+                SizedBox(
                   height: 40,
                 ),
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
@@ -56,13 +53,12 @@ class TrackOrderScreen extends StatelessWidget {
                         )),
                   ],
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 30,
                 ),
-                // Container Text
                 SizedBox(
                   width: double.infinity,
-                  child: const Text(
+                  child: Text(
                     'Products',
                     textAlign: TextAlign.left,
                     style: TextStyle(
@@ -71,18 +67,15 @@ class TrackOrderScreen extends StatelessWidget {
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 30,
                 ),
-
-                // Row of text
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       '#90876532',
                       style: TextStyle(
-                          // fontSize: 16,
                           color: darkText,
                           fontWeight: FontWeight.w500),
                     ),
@@ -92,14 +85,12 @@ class TrackOrderScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 30,
                 ),
-                // Row
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    // column of image and text
                     ImageAndText(
                         image: 'assets/images/snicker.png',
                         text: 'Nike Sneaker'),
@@ -112,7 +103,6 @@ class TrackOrderScreen extends StatelessWidget {
               ],
             ),
 
-            // container button
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
