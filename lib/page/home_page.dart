@@ -5,6 +5,9 @@ import 'package:flutter_application_1/core/color.dart';
 import 'package:flutter_application_1/data/category_model.dart';
 import 'package:flutter_application_1/data/plant_data.dart';
 import 'package:flutter_application_1/page/details_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+final supabase = Supabase.instance.client;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,11 +18,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   PageController controller = PageController();
+
   @override
   void initState() {
     controller = PageController(viewportFraction: 0.6, initialPage: 0);
     super.initState();
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -67,61 +72,41 @@ class _HomePageState extends State<HomePage> {
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
               child: Row(
                 children: [
-                  Container(
-                    height: 45.0,
-                    width: 300.0,
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    decoration: BoxDecoration(
-                      color: white,
-                      border: Border.all(color: green),
-                      boxShadow: [
-                        BoxShadow(
-                          color: green.withOpacity(0.15),
-                          blurRadius: 10,
-                          offset: const Offset(0, 0),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          height: 45,
-                          width: 250,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Search',
+                  Expanded(
+                    child: Container(
+                      height: 45.0,
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      decoration: BoxDecoration(
+                        color: white,
+                        border: Border.all(color: green),
+                        boxShadow: [
+                          BoxShadow(
+                            color: green.withOpacity(0.15),
+                            blurRadius: 10,
+                            offset: const Offset(0, 0),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Row(
+                        children: [
+                          const Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Search',
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10.0,
+                                ), // Menambahkan padding untuk meratakan posisi
+                              ),
                             ),
                           ),
-                        ),
-                        Image.asset(
-                          'assets/icons/search.png',
-                          height: 25,
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    height: 45.0,
-                    width: 45.0,
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    decoration: BoxDecoration(
-                      color: green,
-                      boxShadow: [
-                        BoxShadow(
-                          color: green.withOpacity(0.5),
-                          blurRadius: 10,
-                          offset: const Offset(0, 0),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Image.asset(
-                      'assets/icons/adjust.png',
-                      color: white,
-                      height: 25,
+                          Image.asset(
+                            'assets/icons/search.png',
+                            height: 25,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -274,6 +259,11 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Future<User?> getUserInfo() async {
+    final response = await supabase.auth.getUser();
+    return response.user;
   }
 
   AnimatedContainer slider(active, index) {

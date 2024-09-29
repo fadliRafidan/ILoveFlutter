@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'page/splash_page.dart';
 
-void main() {
+void main() async {
+  await Supabase.initialize(
+    url: 'https://uwhujyhibqeresplhgmb.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3aHVqeWhpYnFlcmVzcGxoZ21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc1NDAzMzgsImV4cCI6MjA0MzExNjMzOH0.wM4QECt2pHc6UoD2KzlKZtJj0ZcdEwKHNF3C_GF6sMk',
+  );
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
