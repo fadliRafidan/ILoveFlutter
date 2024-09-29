@@ -4,12 +4,11 @@ import 'package:flutter_application_1/core/color.dart';
 // ignore: must_be_immutable
 class MyCartItemsContainer extends StatelessWidget {
   MyCartItemsContainer(
-      {Key? key,
+      {super.key,
       required this.image,
       required this.itemName,
       required this.itemPrice,
-      required this.itemQuantity})
-      : super(key: key);
+      required this.itemQuantity});
   String image;
   String itemName;
   String itemPrice;

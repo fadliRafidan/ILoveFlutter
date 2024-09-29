@@ -38,7 +38,7 @@ class ProfilePage extends StatelessWidget {
                             backgroundImage: user.userMetadata?['picture'] !=
                                     null
                                 ? NetworkImage(user.userMetadata?['picture'])
-                                : AssetImage('assets/images/pro.png')
+                                : const AssetImage('assets/images/pro.png')
                                     as ImageProvider,
                           ),
                           const SizedBox(height: 10.0),

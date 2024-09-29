@@ -3,7 +3,7 @@ import 'package:flutter_application_1/core/color.dart';
 import 'package:flutter_application_1/widgets/image_and_text_container.dart';
 
 class TrackOrderScreen extends StatelessWidget {
-  const TrackOrderScreen({Key? key}) : super(key: key);
+  const TrackOrderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class TrackOrderScreen extends StatelessWidget {
         // leading: Icon(),
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         width: double.maxFinite,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,7 +60,7 @@ class TrackOrderScreen extends StatelessWidget {
                   height: 30,
                 ),
                 // Container Text
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: const Text(
                     'Products',

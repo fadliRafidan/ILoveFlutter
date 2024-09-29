@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/color.dart';
 
 class ImageAndText extends StatelessWidget {
-  const ImageAndText({Key? key, required this.image, required this.text})
-      : super(key: key);
+  const ImageAndText({super.key, required this.image, required this.text});
   final String image;
   final String text;
 

@@ -66,7 +66,7 @@ class MyCartScreen extends StatelessWidget {
                     ),
                     // button
                     Container(
-                      padding: EdgeInsets.all(15),
+                      padding: const EdgeInsets.all(15),
                       width: 150,
                       height: 50,
                       decoration: BoxDecoration(

@@ -7,7 +7,7 @@ import 'package:flutter_application_1/page/profil_page.dart';
 import 'package:flutter_application_1/page/wishlist_page.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({Key? key}) : super(key: key);
+  const BottomNavBar({super.key});
 
   @override
   _BottomNavBarState createState() => _BottomNavBarState();

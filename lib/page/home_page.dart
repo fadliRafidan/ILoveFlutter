@@ -1,7 +1,6 @@
 import 'package:flutter_application_1/utils/convert_to_rupiah.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/color.dart';
-import 'package:flutter_application_1/page/details_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final supabase = Supabase.instance.client;
