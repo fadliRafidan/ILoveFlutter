@@ -1,10 +1,9 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_application_1/page/details_page.dart';
-import 'package:flutter_application_1/utils/convert_to_rupiah.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/color.dart';
+import 'package:flutter_application_1/page/details_page.dart';
+import 'package:flutter_application_1/utils/convert_to_rupiah.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter/cupertino.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -23,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   List<dynamic> products = [];
   List<dynamic> popularProducts = [];
   List<dynamic> categoriList = [];
+  String searchQuery = '';
 
   Future<void> _getProfile() async {
     final response = await supabase.auth.getUser();
@@ -39,7 +39,6 @@ class _HomePageState extends State<HomePage> {
     });
     final response =
         await supabase.from('products').select('*,categories:categori_id(*)');
-
     if (categoryId != null && categoryId != 'all') {
       products = response
           .where((product) => product['categori_id'] == categoryId)
@@ -48,6 +47,14 @@ class _HomePageState extends State<HomePage> {
     } else {
       products = response;
       isLoadingMainProduct = false;
+    }
+    if (searchQuery.isNotEmpty) {
+      products = products
+          .where((product) => product['name']
+              .toString()
+              .toLowerCase()
+              .contains(searchQuery.toLowerCase()))
+          .toList();
     }
 
     setState(() {});
@@ -143,6 +150,13 @@ class _HomePageState extends State<HomePage> {
     } finally {}
   }
 
+  void _onSearchChanged(String query) {
+    setState(() {
+      searchQuery = query;
+    });
+    _fetchProducts(null);
+  }
+
   @override
   void initState() {
     controller = PageController(viewportFraction: 0.6, initialPage: 0);
@@ -213,9 +227,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: Row(
                         children: [
-                          const Expanded(
+                          Expanded(
                             child: TextField(
-                              decoration: InputDecoration(
+                              onChanged: _onSearchChanged,
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Search',
                                 contentPadding: EdgeInsets.symmetric(

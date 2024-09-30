@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/color.dart';
-// import 'package:flutter_application_1/data/wishlist_data.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final supabase = Supabase.instance.client;
@@ -35,7 +34,18 @@ class WishlistScreen extends State<WishListPage> {
 
   Future<void> _addToCart(String id) async {
     try {
-      await supabase.from('cart').insert({'product_id': id, 'quantity': 1});
+      final response = await supabase
+          .from('cart')
+          .select('cart_id, quantity')
+          .eq('product_id', id);
+      if (response.isEmpty) {
+        await supabase.from('cart').insert({'product_id': id, 'quantity': 1});
+      } else {
+        await supabase
+            .from('cart')
+            .update({'quantity': response[0]['quantity'] + 1}).eq(
+                'cart_id', response[0]['cart_id']);
+      }
       if (mounted) {
         showDialog(
             context: context,

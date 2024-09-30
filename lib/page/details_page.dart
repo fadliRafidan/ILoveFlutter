@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/color.dart';
 import 'package:flutter_application_1/data/product_model.dart';
@@ -17,6 +18,55 @@ class DetailsPage extends StatefulWidget {
 class _DetailsPageState extends State<DetailsPage> {
   bool isLoadingMainProduct = false;
   Product? product;
+
+Future<void> _addToCart(String id) async {
+    try {
+      final response = await supabase
+          .from('cart')
+          .select('cart_id, quantity')
+          .eq('product_id', id);
+      if (response.isEmpty) {
+        await supabase.from('cart').insert({'product_id': id, 'quantity': 1});
+      } else {
+        await supabase
+            .from('cart')
+            .update({'quantity': response[0]['quantity'] + 1}).eq(
+                'cart_id', response[0]['cart_id']);
+      }
+      if (mounted) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const CupertinoAlertDialog(
+                title: Text('Berhasil'),
+                content: Text('Produk ditambahkan ke keranjang'),
+              );
+            });
+      }
+    } on PostgrestException {
+      if (mounted) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const CupertinoAlertDialog(
+                title: Text('Gagal'),
+                content: Text('Produk gagal ditambahkan'),
+              );
+            });
+      }
+    } catch (error) {
+      if (mounted) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const CupertinoAlertDialog(
+                title: Text('Gagal'),
+                content: Text('Produk gagal ditambahkan'),
+              );
+            });
+      }
+    } finally {}
+  }
 
   @override
   void initState() {
@@ -135,43 +185,73 @@ class _DetailsPageState extends State<DetailsPage> {
                                     ],
                                   ),
                                 ),
-                                GestureDetector(
-                                  onTap: () async {
-                                    bool newFavoritStatus =
-                                        !product!.is_favorit;
-                                    await supabase.from('products').update({
-                                      'is_favorit': newFavoritStatus
-                                    }).eq('product_id', product!.productId);
-                                    _showSnackBar('Success, add to favorit');
-                                    setState(() {
-                                      product!.is_favorit = newFavoritStatus;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 30.0,
-                                    width: 30.0,
-                                    padding: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      color: product!.is_favorit
-                                          ? green
-                                          : Colors.grey.shade400,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: product!.is_favorit
-                                              ? green
-                                              : Colors.grey.shade400,
-                                          blurRadius: 15,
-                                          offset: const Offset(0, 5),
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    child: Image.asset(
-                                      'assets/icons/heart.png',
-                                      color: white,
+                                Row(children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      bool newFavoritStatus =
+                                          !product!.is_favorit;
+                                      await supabase.from('products').update({
+                                        'is_favorit': newFavoritStatus
+                                      }).eq('product_id', product!.productId);
+                                      _showSnackBar('Success, add to favorit');
+                                      setState(() {
+                                        product!.is_favorit = newFavoritStatus;
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 30.0,
+                                      width: 30.0,
+                                      padding: const EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                        color: product!.is_favorit
+                                            ? green
+                                            : Colors.grey.shade400,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: product!.is_favorit
+                                                ? green
+                                                : Colors.grey.shade400,
+                                            blurRadius: 15,
+                                            offset: const Offset(0, 5),
+                                          ),
+                                        ],
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      child: Image.asset(
+                                        'assets/icons/heart.png',
+                                        color: white,
+                                      ),
                                     ),
                                   ),
-                                ),
+                                  const SizedBox(width: 10),
+                                  GestureDetector(
+                                    onTap: () {
+                                      _addToCart(product!.productId);
+                                    },
+                                    child: Container(
+                                      height: 30.0,
+                                      width: 30.0,
+                                      padding: const EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                        color: green,
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: green,
+                                            blurRadius: 15,
+                                            offset: Offset(0, 5),
+                                          ),
+                                        ],
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      child: Image.asset(
+                                        'assets/icons/add.png',
+                                        color: white,
+                                      ),
+                                    ),
+                                  ),
+                                ]),
                               ],
                             ),
                             const SizedBox(height: 20.0),

@@ -22,7 +22,6 @@ class _SplashPageState extends State<SplashPage> {
     const webClientId =
         '938462646069-pg436g6633kf074sssanq96ov8q8rs4f.apps.googleusercontent.com';
 
-    /// iOS Client ID yang Anda daftarkan di Google Cloud.
     const iosClientId =
         '938462646069-8o1ucmg6lpmnt1cls6pkbn13ac9129jn.apps.googleusercontent.com';
 
@@ -31,7 +30,6 @@ class _SplashPageState extends State<SplashPage> {
       serverClientId: webClientId,
     );
 
-    // Google sign in
     final googleUser = await googleSignIn.signIn();
     if (googleUser == null) {
       throw 'Sign-In Canceled';
@@ -57,7 +55,6 @@ class _SplashPageState extends State<SplashPage> {
         _userId = response.user?.id;
       });
 
-      // Arahkan pengguna ke halaman BottomNavBar jika login berhasil
       if (_userId != null) {
         Navigator.push(
           context,
@@ -127,27 +124,27 @@ class _SplashPageState extends State<SplashPage> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor:
-                  const Color(0xFF4285F4), // Warna latar belakang biru Google
+                  const Color(0xFF4285F4), 
               padding: const EdgeInsets.symmetric(
-                  vertical: 12.0, horizontal: 20.0), // Padding
+                  vertical: 12.0, horizontal: 20.0), 
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0), // Sudut membulat
+                borderRadius: BorderRadius.circular(8.0), 
               ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
-                  'assets/icons/google_icon.png', // Ganti dengan path ke ikon Google Anda
-                  height: 24.0, // Ukuran ikon
+                  'assets/icons/google_icon.png',
+                  height: 24.0, 
                   width: 24.0,
                 ),
-                const SizedBox(width: 10), // Spasi antara ikon dan teks
+                const SizedBox(width: 10), 
                 const Text(
                   'Sign in with Google',
                   style: TextStyle(
                     fontSize: 16.0,
-                    color: Colors.white, // Warna teks putih
+                    color: Colors.white, 
                   ),
                 ),
               ],

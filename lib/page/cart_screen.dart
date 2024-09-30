@@ -26,7 +26,6 @@ class MyCartScreen extends State<CartPage> {
         .from('cart')
         .select('*,products:product_id(*)')
         .order('created_at', ascending: true);
-    ;
 
     setState(() {
       productsCartList = response.toList();
@@ -104,7 +103,9 @@ class MyCartScreen extends State<CartPage> {
                                                   ['quantity'] = newQuantity;
                                             });
                                           },
-                                          onItemDelete: _fetchCart,
+                                          onItemDelete: () {
+                                            _fetchCart();
+                                          },
                                         );
                                       },
                                     ),

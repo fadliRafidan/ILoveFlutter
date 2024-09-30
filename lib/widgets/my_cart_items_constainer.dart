@@ -153,14 +153,12 @@ class _MyCartItemsContainerState extends State<MyCartItemsContainer> {
                           ),
                         ),
                         Center(
-                          child: Expanded(
                             child: Text(
                               '${widget.itemQuantity}',
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,
                               ),
-                            ),
                           ),
                         ),
                         GestureDetector(

@@ -6,6 +6,7 @@ class Product {
   final String categoryId;
   final DateTime createdAt;
   final String imageUrl;
+  // ignore: non_constant_identifier_names
   bool is_favorit;
   final Category category;
 
@@ -17,11 +18,11 @@ class Product {
     required this.categoryId,
     required this.createdAt,
     required this.imageUrl,
+    // ignore: non_constant_identifier_names
     this.is_favorit = false,
     required this.category,
   });
 
-  // Fungsi untuk membuat instance Product dari map
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
       productId: map['product_id'],
@@ -35,7 +36,7 @@ class Product {
       imageUrl: map['image'],
       is_favorit: map['is_favorit'],
       category: Category.fromMap(
-          map['categories']), // Asumsi ada category sebagai nested object
+          map['categories']), 
     );
   }
 }

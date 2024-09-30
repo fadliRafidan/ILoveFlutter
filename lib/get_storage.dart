@@ -1,20 +1,11 @@
-// import 'package:get_cli/get_cli.dart';
+import 'package:get_storage/get_storage.dart';
 
-// writeCart(String id, String name) {
-//   final box = GetStorage();
-//   if (box.read("cart") != null) {
-//     box.remove("cart");
-//   }
-//   box.write("cart", {
-//     "id": id,
-//     "name": password,
-//   });
-// }
+writeCart(int totalItems) {
+  final box = GetStorage();
+  box.write('total_cart_items', totalItems);
+}
 
-// readCart() {
-//   final box = GetStorage();
-//   if (box.read("cart") != null) {
-//     return box.read("cart") as Map<String, dynamic>;
-//   }
-//   return null;
-// }
+readCart() {
+  final box = GetStorage();
+  return box.read('total_cart_items') ?? 0;
+}
